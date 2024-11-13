@@ -104,6 +104,34 @@ local namesTable = {
   }
 }
 
+-- standard pipes to ground are 10 tiles: 150kW, one tile costs 15kW of energy
+-- tier 1 pipes to ground are 11 tiles: 165kW
+-- tier 2 pipes to ground are 22 tiles: 333kW
+-- tier 3 pipes to ground are 33 tiles: 495kW
+-- 2 directions, 2x the energy, etc.
+local heating_energy_table = {
+	["one-to-one"] = {
+		["1"] = "165kW",
+		["2"] = "330kW",
+		["3"] = "495kW",
+	},
+	["one-to-two"] = {
+		["1"] = "330kW",
+		["2"] = "660kW",
+		["3"] = "990kW",
+	},
+	["one-to-three"] = {
+		["1"] = "495kW",
+		["2"] = "990kW",
+		["3"] = "1485kW",
+	},
+	["one-to-four"] = {
+		["1"] = "660kW",
+		["2"] = "1320kW",
+		["3"] = "1980kW",
+	}
+}
+
 -- Table gets built in reverse so that we can use the current pipe tier for the next pipes next_upgrade
 local levelsTable = {}
 
@@ -206,6 +234,7 @@ for types, sets in pairs(namesTable) do
         else
           currentPipe.icon = "__advanced-fluid-handling-space-age__/graphics/icons/" .. datas.icon .. "-t" .. levelsS .. ".png"
           currentPipe.se_allow_in_space = false
+          currentPipe.heating_energy = heating_energy_table[types][levelsS]
         end
 
         currentPipe.icon_size = 32

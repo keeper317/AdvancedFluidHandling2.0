@@ -71,6 +71,33 @@ local names_table = {
     },
 }
 
+-- standard pipes to ground are 10 tiles: 150kW, one tile costs 15kW of energy
+-- tier 1 i and l pipes: 11 * 2 * 15kW = 330 kW, t pipes  11 * 3 * 15kW = 495 kW,  cross pipes 11 * 4 * 15kW = 660 kW
+-- tier 2 i and l pipes: 22 * 2 * 15kW = 660 kW, t pipes  22 * 3 * 15kW = 990 kW,  cross pipes 22 * 4 * 15kW = 1320 kW
+-- tier 3 i and l pipes: 33 * 2 * 15kW = 990 kW, t pipes  33 * 3 * 15kW = 1485 kW, cross pipes 33 * 4 * 15kW = 1980 kW
+local heating_energy_table = {
+	["underground-i"] = {
+		["1"] = "330kW",
+		["2"] = "660kW",
+		["3"] = "990kW",
+	},
+	["underground-L"] = {
+		["1"] = "330kW",
+		["2"] = "660kW",
+		["3"] = "990kW",
+	},
+	["underground-t"] = {
+		["1"] = "495kW",
+		["2"] = "990kW",
+		["3"] = "1485kW",
+	},
+	["underground-cross"] = {
+		["1"] = "660kW",
+		["2"] = "1320kW",
+		["3"] = "1980kW",
+	}
+}
+
 -- Table gets built in reverse so that we can use the current pipe tier for the next pipes next_upgrade
 local levels_table = {}
 --[5] = Color.from_rgb(5,73,53,255)
@@ -194,6 +221,7 @@ for name, properties in pairs(names_table) do
             -- current_pipe.collision_mask = afh_ground_only
             current_pipe.icon = "__advanced-fluid-handling-space-age__/graphics/icons/" .. name .. "-t" .. level .. ".png"
             current_pipe.se_allow_in_space = false
+            current_pipe.heating_energy = heating_energy_table[name][level]
         end
 
         current_pipe.icon_size = 32
